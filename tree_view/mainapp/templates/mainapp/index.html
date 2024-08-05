@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="accordion" id="accordionSubdivs">
+        {% for div in subdiv %}
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{ div.id }}" aria-expanded="false"
+                            aria-controls="collapse{{ div.id }}">
+                        {{ div.name }}
+                    </button>
+                </h2>
+                <div id="collapse{{ div.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionSubdivs">
+                    <div class="">
+                        <div class="accordion" id="accordionSubdiv{{ div.id }}">
+
+
+                            {% for position in positions %}
+                                {% if position.subdivision_id == div.id %}
+
+
+
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapse{{ div.id }}{{ position.id }}"
+                                                    aria-expanded="true"
+                                                    aria-controls="collapse{{ div.id }}{{ position.id }}">
+                                                {{ position.name }}
+                                            </button>
+                                        </h2>
+                                        <div id="collapse{{ div.id }}{{ position.id }}"
+                                             class="accordion-collapse collapse show"
+                                             data-bs-parent="#accordionSubdiv{{ div.id }}">
+                                            <div class="accordion-body">
+                                                <ul class="list-group">
+                                                    {% for employee in employees %}
+                                                        {% if employee.subdivision_id == div.id and employee.position_id == position.id %}
+                                                            <li class="list-group-item">
+                                                                {{ employee.name }}, {{ employee.surname }}
+                                                                (Salary: {{ employee.salary }})
+                                                            </li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                {% endif %}
+                            {% endfor %}
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
